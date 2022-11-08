@@ -1,2 +1,2 @@
 # WebAR-Project
-Created with CodeSandbox
+A mock Microsoft WebPage that showcases products with a modiel viwer option using AR. 
