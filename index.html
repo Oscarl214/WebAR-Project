@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>&lt;model-viewer&gt; template</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="&lt;model-viewer&gt; template" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link type="text/css" href="./src/styles.css" rel="stylesheet" />
+    <!-- OPTIONAL: The :focus-visible polyfill removes the focus ring for some input types -->
+    <script
+      src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js"
+      defer
+    ></script>
+  </head>
+  <body>
+    <!-- <model-viewer> HTML element -->
+    <div class="words word-1">
+      <span>M</span>
+      <span>I</span>
+      <span>C</span>
+      <span>R</span>
+      <span>O</span>
+      <span>S</span>
+      <span>O</span>
+      <span>F</span>
+      <span>T</span>
+    </div>
+
+    <model-viewer
+      bounds="tight"
+      enable-pan
+      src="./Assets/Models/XBOXC.glb"
+      ar
+      ar-modes="webxr scene-viewer quick-look"
+      camera-controls
+      environment-image="neutral"
+      poster="./Assets/Models/Control.webp"
+      shadow-intensity="1"
+      camera-orbit="-49.88deg 82.05deg auto"
+    >
+      <h1 class="title-brand"></h1>
+      <button
+        id="C1"
+        class="Hotspot"
+        slot="hotspot-1"
+        data-position="3.4101099773983576m 9.673941112496085m -15.229651406639341m"
+        data-normal="0.991252650576725m 0.12557046807947633m -0.040623149446083064m"
+        data-visibility-attribute="visible"
+      >
+        <div class="HotspotAnnotation">XBOX ONE CONTROLLER</div>
+      </button>
+      <button
+        id="C2"
+        class="Hotspot"
+        slot="hotspot-2"
+        data-position="2.9843555305590814m -5.072418179226325m 7.081316970644121m"
+        data-normal="0.9502948308512565m -0.07863108303420561m 0.30125883761020184m"
+        data-visibility-attribute="visible"
+      >
+        <div class="HotspotAnnotation">$70</div>
+      </button>
+      <button
+        id="XO1"
+        class="Hotspot"
+        slot="hotspot-3"
+        data-position="135.19446995860767m 26.327715607979528m 141.88406913462447m"
+        data-normal="0m 1.629206780595638e-7m 0.9999999999999869m"
+        data-visibility-attribute="visible"
+      >
+        <div class="HotspotAnnotation">XBOX ONE</div>
+      </button>
+      <button
+        id="XO2"
+        class="Hotspot"
+        slot="hotspot-4"
+        data-position="-184.96233780472323m -18.008402360293893m 141.88407635789505m"
+        data-normal="0m 1.6292067805956378e-7m 0.9999999999999867m"
+        data-visibility-attribute="visible"
+      >
+        <div class="HotspotAnnotation">$199</div>
+      </button>
+      <button
+        id="XX1"
+        class="Hotspot"
+        slot="hotspot-5"
+        data-position="9.991136585487393m 37.67870103666633m -7.303544779658722m"
+        data-normal="1m 0m 0m"
+        data-visibility-attribute="visible"
+      >
+        <div class="HotspotAnnotation">XBOX X Series</div></button
+      ><button
+        id="XX2"
+        class="Hotspot"
+        slot="hotspot-6"
+        data-position="9.991136585487393m 9.31085012606118m -7.515676483903325m"
+        data-normal="1m 0m 0m"
+        data-visibility-attribute="visible"
+      >
+        <div class="HotspotAnnotation">$500</div>
+      </button>
+      <div class="slider">
+        <div class="slides">
+          <button
+            id="C"
+            class="slide selected"
+            onclick="switchSrc(this, 'XBOXC')"
+            style="background-image: url('./Assets/Models/Control.webp');"
+          ></button>
+          <button
+            id="XO"
+            class="slide"
+            onclick="switchSrc(this, 'XBOXONE')"
+            style="background-image: url('./Assets/Models/XboxOne.webp');"
+          ></button>
+          <button
+            id="XX"
+            class="slide"
+            onclick="switchSrc(this, 'XBOXX')"
+            style="background-image: url('./Assets/Models/XboxX.webp');"
+          ></button>
+        </div>
+      </div>
+
+      <!-- </model-viewer> -->
+      <div class="progress-bar hide" slot="progress-bar">
+        <div class="update-bar"></div>
+      </div>
+      <button slot="ar-button" id="ar-button">
+        View in your space
+      </button>
+      <div id="ar-prompt">
+        <img src="./Assets/Models/ar_hand_prompt.png" />
+      </div>
+    </model-viewer>
+    <script src="./src/script.js"></script>
+    <!-- Loads <model-viewer> for browsers: -->
+
+    <script type="module">
+      const modelViewer = document.querySelector("model-viewer");
+      window.switchSrc = (element, name) => {
+        const base = "./Assets/Models/" + name;
+        modelViewer.src = base + ".glb";
+        modelViewer.poster = base + ".webp";
+        const slides = document.querySelectorAll(".slide");
+        slides.forEach((element) => {
+          element.classList.remove("selected");
+        });
+        element.classList.add("selected");
+        //------------------------------------------------
+        // Hotspots control
+        //------------------------------------------------
+        var infoSet = [];
+
+        const info = document.querySelectorAll(".Hotspot");
+        info.forEach((element) => {
+          element.classList.add("hide");
+        });
+
+        if (name === "XBOXC") {
+          var infoSet = document.querySelectorAll(`[id^="C"]`);
+        }
+        if (name === "XBOXONE") {
+          var infoSet = document.querySelectorAll(`[id^="XO"]`);
+        }
+        if (name === "XBOXX") {
+          var infoSet = document.querySelectorAll(`[id^="XX"]`);
+        }
+
+        infoSet.forEach((element) => {
+          element.classList.remove("hide");
+          element.classList.add("show");
+        });
+
+        //------------------------------------------------
+        // end // Hotspots control
+        //------------------------------------------------
+      };
+
+      document
+        .querySelector(".slider")
+        .addEventListener("beforexrselect", (ev) => {
+          // Keep slider interactions from affecting the XR scene.
+          ev.preventDefault();
+        });
+    </script>
+
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+  </body>
+</html>
